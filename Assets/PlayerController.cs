@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     bool isGrounded;
     [SerializeField] float jumpForce;
     [SerializeField] float speed;
+    string name = "Pepe";
+    public string Name { get => name; set => name = value; }
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -16,15 +18,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isGrounded = false;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
         }
     }
-    public string Name { get => name; set => name = value; }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
 }
